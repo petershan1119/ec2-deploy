@@ -41,9 +41,10 @@ secrets_base = json.loads(open(SECRETS_BASE, 'rt').read())
 SECRET_KEY = secrets_base['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
+    'localhost',
     '.amazonaws.com'
 ]
 
@@ -57,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_extensions',
 
     'photos.apps.PhotosConfig',
 ]
