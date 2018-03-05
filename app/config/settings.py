@@ -13,6 +13,8 @@ import json
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import raven
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
@@ -45,7 +47,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
-    '.amazonaws.com'
+    # '.amazonaws.com'
 ]
 
 
@@ -59,10 +61,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'raven.contrib.django.raven_compat',
     'django_extensions',
 
     'photos.apps.PhotosConfig',
+
 ]
+
+RAVEN_CONFIG = {
+    'dsn': 'https://c4e5cd05ecc941418964fa2648c5c5e6:b9657eef32344edbb526526f46b1b5df@sentry.io/298196',
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -137,3 +148,47 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR', # To capture more than ERROR, change to WARNING, INFO, etc.
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'tags': {'custom-tag': 'x'},
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
