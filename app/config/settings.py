@@ -47,7 +47,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
-    # '.amazonaws.com'
+    '.amazonaws.com'
 ]
 
 
