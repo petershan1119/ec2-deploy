@@ -39,7 +39,7 @@ pip install -r requirements.txt
 ```json
 {
   "SECRET_KEY": "<Django settings SECRET_KEY value>",
-  "RAVEN_DSN": "https://73c1acd56bc84e5d8f1f042f7e2757b1:b08f4762181940b38463fbddcb03c33c@sentry.io/298200"
+  "RAVEN_DSN": "https://<SecurityToekn>@sentry.io/..."
 }
 ```
 
