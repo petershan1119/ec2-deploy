@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import raven
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
 # Static
@@ -33,6 +33,9 @@ STATICFILES_DIRS = [
 SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
 # ec2-deploy/.secrets/base.json
 SECRETS_BASE = os.path.join(SECRETS_DIR, 'base.json')
+SECRETS_LOCAL = os.path.join(SECRETS_DIR, 'local.json')
+SECRETS_DEV = os.path.join(SECRETS_DIR, 'dev.json')
+
 # base.json파일을 읽어온 결과
 secrets_base = json.loads(open(SECRETS_BASE, 'rt').read())
 
@@ -41,14 +44,6 @@ secrets_base = json.loads(open(SECRETS_BASE, 'rt').read())
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = secrets_base['SECRET_KEY']
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = [
-    'localhost',
-    '.amazonaws.com'
-]
 
 
 # Application definition
@@ -69,7 +64,7 @@ INSTALLED_APPS = [
 ]
 
 RAVEN_CONFIG = {
-    'dsn': 'https://c4e5cd05ecc941418964fa2648c5c5e6:b9657eef32344edbb526526f46b1b5df@sentry.io/298196',
+    'dsn': secrets_base['RAVEN_DSN'],
     # If you are using git, you can also automatically configure the
     # release based on the git info.
     'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
@@ -109,12 +104,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': 'fc7th.cfhqxl0062ik.ap-northeast-2.rds.amazonaws.com',
+#         'NAME': 'ec2_deploy',
+#         'USER': 'swhan',
+#         'PASSWORD': 'rhfueo1117',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -139,9 +144,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
