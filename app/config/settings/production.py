@@ -9,3 +9,8 @@ ALLOWED_HOSTS = [
 
 DATABASES = secrets['DATABASES']
 WSGI_APPLICATION = 'config.wsgi.production.application'
+
+# Media(User-uploaded files)를 위한 스토리지
+DEFAULT_FILE_STORAGE = 'config.storage.DefaultFileStorage'
+# Static files(collectstatic)를 위한 스토리지
+STATICFILES_STORAGE = 'config.storage.StaticFilesStorage'
