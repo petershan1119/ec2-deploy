@@ -1,3 +1,5 @@
+from urllib.request import urlopen
+
 from .base import *
 
 secrets = json.loads(open(SECRETS_PRODUCTION, 'rt').read())

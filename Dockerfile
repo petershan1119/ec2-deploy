@@ -10,4 +10,4 @@ RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-en
 
 RUN         cp /srv/project/.config/supervisord.conf /etc/supervisor/conf.d/
 
-CMD         pkkill nginx; supervisord -n
+CMD         pkill nginx; supervisord -n
